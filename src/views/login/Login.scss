@@ -1,0 +1,21 @@
+.login-content {
+  width: 600px;
+  margin: 200px auto;
+
+  .login-item {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+
+    .label-content {
+      width: 80px;
+      text-align: center;
+    }
+  }
+
+  .btn {
+    display: block;
+    margin: 20px auto;
+    width: 500px;
+  }
+}
