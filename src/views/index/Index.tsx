@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router'
-import { Layout, Menu, Breadcrumb, Button } from 'antd';
+import { Layout, Menu, Breadcrumb } from 'antd';
 import { UserOutlined } from '@ant-design/icons'
 import { SET_TEST_NAME } from '../../store/actions'
+import { Route, Link } from 'react-router-dom'
 import './Index.scss'
+import asyncComponent from '../../components/asyncComponent'
+const Root = asyncComponent(() => import('../root/Root'))
 const { SubMenu } = Menu;
 const { Content, Sider } = Layout;
 
@@ -29,8 +32,11 @@ class Index extends Component<Props, State> {
   componentDidMount() {
     console.log(this.props)
   }
-  fn () {
+  fn() {
     this.props.setName('马健')
+  }
+  clickMenu({ key }: any) {
+    this.props.history.push(key)
   }
   render() {
     return (
@@ -41,9 +47,10 @@ class Index extends Component<Props, State> {
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             style={{ height: '100%', borderRight: 0 }}
+            onClick={this.clickMenu.bind(this)}
           >
             <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-              <Menu.Item key="1">{this.props.data.name}</Menu.Item>
+              <Menu.Item key="/index">{this.props.data.name}</Menu.Item>
               <Menu.Item key="2">option2</Menu.Item>
               <Menu.Item key="3">option3</Menu.Item>
               <Menu.Item key="4">option4</Menu.Item>
@@ -64,7 +71,8 @@ class Index extends Component<Props, State> {
               minHeight: 280,
             }}
           >
-            <Button type="primary" onClick={() => this.fn()}>Primary</Button>
+            <Link to="/index">跳转测试</Link>
+            <Route path="/index" exact component={Root} />
           </Content>
         </Layout>
       </Layout>

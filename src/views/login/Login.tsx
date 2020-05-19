@@ -1,12 +1,12 @@
 import React, { Component, ReactNode } from 'react'
 import './Login.scss'
-import { Card, Input, Button } from 'antd'
+import { Card, Form, Input, Button, Checkbox } from 'antd'
 import { RouteComponentProps } from 'react-router'
 
 interface RouterInfo {
   [key: string]: any
 }
-interface Props extends RouteComponentProps<RouterInfo> {}
+interface Props extends RouteComponentProps<RouterInfo> { }
 interface State {
   name: string
   passWord: string
@@ -21,21 +21,55 @@ class Login extends Component<Props, State> {
       passWord: ''
     }
   }
-  goIndex() {
+  onFinish(values: any) {
+    console.log(values, 'onFinish')
     this.props.history.push('/index')
   }
+  // onFinishFailed(errorInfo: any) {
+  //   console.log(errorInfo, 'onFinishFailed')
+  // }
   render(): ReactNode {
+    const layout = {
+      labelCol: { span: 4 },
+      wrapperCol: { span: 20 },
+    };
+    const tailLayout = {
+      wrapperCol: { offset: 4, span: 20 },
+    };
     return (
       <Card className="login-content">
-        <div className="login-item">
-          <div className="label-content">账号</div><Input />
-        </div>
-        <div className="login-item">
-          <div className="label-content">密码</div><Input />
-        </div>
-        <Button type="primary" block className="btn" onClick={this.goIndex.bind(this)}>
-          登录
-        </Button>
+        <Form
+          {...layout}
+          name="basic"
+          initialValues={{ remember: true }}
+          onFinish={this.onFinish.bind(this)}
+        >
+          <Form.Item
+            label="Username"
+            name="username"
+            rules={[{ required: true, message: 'Please input your username!' }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: 'Please input your password!' }]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+            <Checkbox>Remember me</Checkbox>
+          </Form.Item>
+
+          <Form.Item {...tailLayout}>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
       </Card>
     )
   }
